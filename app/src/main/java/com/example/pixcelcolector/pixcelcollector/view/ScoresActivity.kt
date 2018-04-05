@@ -22,7 +22,8 @@ class ScoresActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(view: View)
     {
-q           // calling an activity using <intent-filter> action namea
+        val intent = Intent(this, GameActivity::class.java)
+        // calling an activity using <intent-filter> action name
         //  Intent inent = new Intent("com.hmkcode.android.ANOTHER_ACTIVITY");
         startActivity(intent)
         finish()
