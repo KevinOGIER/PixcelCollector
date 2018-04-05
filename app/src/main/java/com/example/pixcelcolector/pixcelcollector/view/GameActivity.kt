@@ -16,6 +16,11 @@ import android.view.WindowManager
 import com.example.pixcelcolector.pixcelcollector.R
 import kotlinx.android.synthetic.main.activity_game.*
 import java.util.*
+import android.R.attr.y
+import android.R.attr.x
+import android.graphics.Point
+import android.view.Display
+import android.widget.Toast
 
 class GameActivity : AppCompatActivity(), SensorEventListener {
 
@@ -25,8 +30,8 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
         setContentView(R.layout.activity_game)
 
         var rand = Random()
-        var newCoordX = 1 + rand.nextInt(900)
-        var newCoordY = 1 + rand.nextInt(900)
+        var newCoordX = 1 + rand.nextInt(800)
+        var newCoordY = 1 + rand.nextInt(800)
 
         square.x = newCoordX.toFloat()
         square.y = newCoordY.toFloat()
@@ -49,6 +54,11 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        mSensorManager.registerListener(this,mGravity, SensorManager.SENSOR_DELAY_GAME)
+    }
+
     var score = 0
 
     val mSensorManager: SensorManager by lazy{
@@ -64,26 +74,30 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
     }
 
     override fun onSensorChanged(event: SensorEvent) {
-        magicball.translationX = - (event.values[2] * 6)
-        magicball.translationY = - event.values[1] * 12
-
-        //Log.i("tag", (boulemagique.x + boulemagique.width).toString())
+        magicball.translationX = - (event.values[2] * (GameScreen.width / 172))
+        magicball.translationY = - event.values[1] * (GameScreen.height / 96 )
 
         if ((magicball.y < square.y && magicball.y + magicball.height > square.y + square.height) && (magicball.x < square.x && magicball.x + magicball.width > square.x + square.width)) {
             score++
             displayedScore.setText(score.toString())
-            Log.i("Succes", score.toString())
 
             var rand = Random()
-            var newCoordX = 1 + rand.nextInt(900)
-            var newCoordY = 1 + rand.nextInt(900)
+            var newCoordX = 1 + rand.nextInt((GameScreen.width * 0.9).toInt())
+            var newCoordY = 1 + rand.nextInt((GameScreen.height * 0.9).toInt())
 
             square.x = newCoordX.toFloat()
             square.y = newCoordY.toFloat()
         }
 
-        if(magicball.x < -40 || magicball.x + magicball.width > 1100){
+        if(magicball.x < - 30 ||
+                magicball.x + magicball.width > GameScreen.width + 50||
+                magicball.y < - 30 ||
+                magicball.y + magicball.height > GameScreen.height + 50){
             vibratorService.vibrate(100)
+            if (score > 0) {
+                score--
+                displayedScore.setText(score.toString())
+            }
         }
     }
 
@@ -91,11 +105,6 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
 
-    }
-
-    override fun onResume() {
-        super.onResume()
-        mSensorManager.registerListener(this,mGravity, SensorManager.SENSOR_DELAY_GAME)
     }
 
     override fun onDestroy() {
