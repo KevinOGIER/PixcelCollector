@@ -5,23 +5,22 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.widget.Toast
+import kotlinx.android.synthetic.main.activity_scores.*
 
 val DATABASE_NAME = "PixcelCollect_DB"
 val TABLE_NAME = "ScoresTable"
 val COL_ID = "ID"
 val COL_POINT = "Score"
 val COL_USERNAME = "Username"
-val COL_DATE = "Date"
 
 class DataBaseHandler (private val context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, 1)
 {
-    override fun onCreate(db: SQLiteDatabase?) {
+    override fun onCreate(db: SQLiteDatabase?)
+    {
         val createTable = "CREATE TABLE " + TABLE_NAME + " (" +
                 COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COL_POINT + " INTEGER," +
-                COL_USERNAME + " VARCHAR(5), " +
-                COL_DATE + " VARCHAR(10))"
-
+                COL_USERNAME + " VARCHAR(5), "
         db?.execSQL(createTable)
     }
 
@@ -34,7 +33,6 @@ class DataBaseHandler (private val context: Context) : SQLiteOpenHelper(context,
         var contentValues = ContentValues()
         contentValues.put(COL_POINT, score.point)
         contentValues.put(COL_USERNAME, score.username)
-        contentValues.put(COL_DATE, score.date)
         var result  = db.insert(TABLE_NAME, null ,contentValues)
         if(result == -1.toLong())
         {
@@ -49,7 +47,7 @@ class DataBaseHandler (private val context: Context) : SQLiteOpenHelper(context,
     fun selectScoreList(): MutableList<Score> {
         var listScore: MutableList<Score> = ArrayList()
         val db = this.readableDatabase
-        val query = "Select * from " + TABLE_NAME
+        val query = "Select * from " + TABLE_NAME + " order by " + COL_POINT +  " desc limit 3"
         val result = db.rawQuery(query, null)
 
         if (result.moveToFirst()) {
@@ -58,14 +56,11 @@ class DataBaseHandler (private val context: Context) : SQLiteOpenHelper(context,
                 score.id = result.getString(result.getColumnIndex(COL_ID)).toInt()
                 score.username = result.getString(result.getColumnIndex(COL_USERNAME))
                 score.point = result.getString(result.getColumnIndex(COL_POINT)).toInt()
-                score.date = result.getString(result.getColumnIndex(COL_DATE))
                 listScore.add(score)
             } while (result.moveToNext())
         }
-
         result.close()
         db.close()
-
         return listScore
     }
 
@@ -84,7 +79,6 @@ class DataBaseHandler (private val context: Context) : SQLiteOpenHelper(context,
                 score.id = result.getString(result.getColumnIndex(COL_ID)).toInt()
                 score.username = result.getString(result.getColumnIndex(COL_USERNAME))
                 score.point = result.getString(result.getColumnIndex(COL_POINT)).toInt()
-                score.date = result.getString(result.getColumnIndex(COL_DATE))
                 listScoreUser.add(score)
             } while (result.moveToNext())
         }
@@ -93,29 +87,6 @@ class DataBaseHandler (private val context: Context) : SQLiteOpenHelper(context,
         db.close()
 
         return listScoreUser
-    }
-
-    fun updateDate()
-    {
-        val db = this.writableDatabase
-        val query = "Select * from " + TABLE_NAME
-        val result = db.rawQuery(query, null)
-
-        if(result.moveToFirst())
-        {
-            do
-            {
-                var cv = ContentValues()
-                cv.put(COL_POINT, result.getInt(result.getColumnIndex(COL_POINT)+2))
-                db.update(TABLE_NAME, cv, COL_ID + "=? AND "+ COL_USERNAME + "=?",
-                        arrayOf(result.getString(result.getColumnIndex(COL_ID)),
-                                result.getString(result.getColumnIndex(COL_USERNAME))))
-
-            } while (result.moveToNext())
-        }
-
-        result.close()
-        db.close()
     }
 
     fun getFirstScore() : MutableList<Score>
@@ -145,9 +116,72 @@ class DataBaseHandler (private val context: Context) : SQLiteOpenHelper(context,
                 index ++
             }
         }
-
         result.close()
         db.close()
         return listBestScore
+    }
+
+    // TEMP : TEST
+    fun getOneRow(): String
+    {
+        val db = this.readableDatabase
+        val query = "Select " + COL_USERNAME + ", " + COL_POINT + " From " + TABLE_NAME
+        val result = db.rawQuery(query,null)
+        var score = Score()
+        var username:String = ""
+
+        if(result.moveToFirst())
+        {
+            username = result.getString(result.getColumnIndex(COL_USERNAME))
+            score.username = result.getString(result.getColumnIndex(COL_USERNAME))
+            score.point = result.getString(result.getColumnIndex(COL_POINT)).toInt()
+        }
+
+        result.close()
+        db.close()
+
+        return username
+    }
+
+    fun getClassement(username: String): String
+    {
+        var listScoreUser: MutableList<Score> = ArrayList()
+        val db = this.readableDatabase
+        val query = "select * from ScoresTable order by Score desc"
+        var rank = ""
+
+        val result = db.rawQuery(query,null)
+
+        if(result.moveToFirst())
+        {
+            do
+            {
+                var score = Score()
+                score.id = result.getString(result.getColumnIndex(COL_ID)).toInt()
+                score.username = result.getString(result.getColumnIndex(COL_USERNAME))
+                score.point = result.getString(result.getColumnIndex(COL_POINT)).toInt()
+                listScoreUser.add(score)
+            } while (result.moveToNext())
+        }
+
+        result.close()
+        db.close()
+
+        var topScoreList: MutableList<Score> = listScoreUser
+
+        var iterator = topScoreList.listIterator()
+
+        var i = 0
+
+        for(monScore in iterator)
+        {
+            i++
+            if(monScore.username == username){
+                rank = i.toString()
+                break
+            }
+        }
+
+        return rank
     }
 }

@@ -47,6 +47,8 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
             }
 
             override fun onFinish() {
+
+                mSensorManager.unregisterListener(this@GameActivity);
                 val intent = Intent(this@GameActivity, ScoresActivity::class.java)
                 intent.putExtra("SCORE", score)
                 startActivity(intent)
@@ -112,6 +114,7 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
 
     override fun onPause() {
         super.onPause()
+        mSensorManager.unregisterListener(this);
         mediaPlayer.pause()
     }
 
@@ -122,6 +125,7 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
 
     override fun onDestroy() {
         super.onDestroy()
+        mSensorManager.unregisterListener(this);
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         mediaPlayer.release()
 

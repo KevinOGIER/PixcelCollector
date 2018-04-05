@@ -19,20 +19,24 @@ class StartActivity : AppCompatActivity(), View.OnClickListener
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_start)
 
+        // Display the scores
         val context = this
         val db = DataBaseHandler(context)
+
+        var topScoreList: MutableList<Score> = db.selectScoreList()
+
+        var iterator = topScoreList.listIterator()
+
+        for(monScore in iterator)
+        {
+            var tempText = topScore.text
+            topScore.text = tempText.toString() + monScore.username + " : " + monScore.point + "\n"
+        }
 
         val text = "Règles : vous avez 15 secondes pour récupérer le plus de carré possible en inclinant le téléphone afin de déplacer la boule. ATTENTION : Si vous touchez les bords, vous perdez 1 point !"
         val duration = Toast.LENGTH_LONG
         val toast = Toast.makeText(applicationContext, text, duration)
         val buttonHelp = buttonHelp.setOnClickListener({toast.show()})
-
-        var score1 = Score(1,"YoMama","01/01/2001")
-        db.insertData(score1)
-
-        val temp = 0
-        //textView.setText(db.getFirstScore().toString())
-
         buttonPlay.setOnClickListener(this);
     }
 
