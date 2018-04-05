@@ -1,14 +1,17 @@
 package com.example.pixcelcolector.pixcelcollector.view
 
 import android.content.Context
+import android.content.Intent
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.os.Vibrator
 import android.util.Log
+import android.view.View
 import android.view.WindowManager
 import com.example.pixcelcolector.pixcelcollector.R
 import kotlinx.android.synthetic.main.activity_game.*
@@ -27,6 +30,23 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
 
         square.x = newCoordX.toFloat()
         square.y = newCoordY.toFloat()
+
+        object : CountDownTimer(15000, 1000) {
+
+            override fun onTick(millisUntilFinished: Long)
+            {
+                chronometer.setText("seconds remaining: " + millisUntilFinished / 1000)
+                //here you can have your logic to set text to edittext
+            }
+
+            override fun onFinish() {
+                val inent = Intent(this@GameActivity, ScoresActivity::class.java)
+                startActivity(inent)
+                finish()
+            }
+
+        }.start()
+
     }
 
     var score = 0
@@ -66,6 +86,8 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
             vibratorService.vibrate(100)
         }
     }
+
+
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
 
