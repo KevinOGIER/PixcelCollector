@@ -8,9 +8,11 @@ import com.example.pixcelcolector.pixcelcollector.model.Score
 import kotlinx.android.synthetic.main.activity_start.*
 import android.content.Intent
 import android.view.View
+import android.widget.Toast
 
 class StartActivity : AppCompatActivity(), View.OnClickListener
 {
+
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
@@ -18,6 +20,11 @@ class StartActivity : AppCompatActivity(), View.OnClickListener
 
         val context = this
         val db = DataBaseHandler(context)
+
+        val text = "Règles : vous avez 15 secondes pour récupérer le plus de carré possible en inclinant le téléphone afin de déplacer la boule. ATTENTION : Si vous touchez les bords, vous perdez 1 point !"
+        val duration = Toast.LENGTH_LONG
+        val toast = Toast.makeText(applicationContext, text, duration)
+        val buttonHelp = buttonHelp.setOnClickListener({toast.show()})
 
         var score1 = Score(1,"YoMama","01/01/2001")
         db.insertData(score1)
@@ -36,5 +43,6 @@ class StartActivity : AppCompatActivity(), View.OnClickListener
         startActivity(intent)
         finish()
     }
+
 
 }
