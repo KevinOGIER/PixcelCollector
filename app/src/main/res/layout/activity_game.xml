@@ -5,6 +5,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".view.GameActivity">
+
+    <TextView
+        android:id="@+id/chronometer"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Large Text"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/displayedScore"
         android:layout_width="51dp"
@@ -33,7 +48,6 @@
             android:id="@+id/square"
             android:layout_width="28dp"
             android:layout_height="25dp"
-            android:layout_marginStart="4dp"
             android:layout_marginTop="4dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
