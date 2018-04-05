@@ -7,6 +7,5 @@ import com.example.pixcelcolector.pixcelcollector.model.DataBaseHandler
 import com.example.pixcelcolector.pixcelcollector.model.Score
 
 class ScoresActivity : AppCompatActivity() {
-
-
+    
 }

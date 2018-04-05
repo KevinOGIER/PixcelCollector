@@ -8,8 +8,6 @@ import com.example.pixcelcolector.pixcelcollector.model.Score
 import kotlinx.android.synthetic.main.activity_start.*
 import android.content.Intent
 
-
-
 class StartActivity : AppCompatActivity()
 {
     override fun onCreate(savedInstanceState: Bundle?)
