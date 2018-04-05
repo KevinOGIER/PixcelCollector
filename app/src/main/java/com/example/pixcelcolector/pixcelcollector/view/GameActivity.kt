@@ -6,6 +6,7 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
+import android.media.MediaPlayer
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -16,18 +17,19 @@ import android.view.WindowManager
 import com.example.pixcelcolector.pixcelcollector.R
 import kotlinx.android.synthetic.main.activity_game.*
 import java.util.*
-import android.R.attr.y
-import android.R.attr.x
-import android.graphics.Point
-import android.view.Display
-import android.widget.Toast
 
 class GameActivity : AppCompatActivity(), SensorEventListener {
 
+    val mediaPlayer by lazy {
+        MediaPlayer.create(this, R.raw.sax)
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
+
+
+        mediaPlayer.start()
 
         var rand = Random()
         var newCoordX = 1 + rand.nextInt(800)
@@ -107,8 +109,20 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
 
     }
 
+    override fun onPause() {
+        super.onPause()
+        mediaPlayer.pause()
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        mediaPlayer.start()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        mediaPlayer.release()
+
     }
 }
