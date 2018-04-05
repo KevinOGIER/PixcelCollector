@@ -1,5 +1,4 @@
 package com.example.pixcelcolector.pixcelcollector.model
-
 import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
@@ -10,7 +9,7 @@ import android.widget.Toast
 val DATABASE_NAME = "PixcelCollect_DB"
 val TABLE_NAME = "ScoresTable"
 val COL_ID = "ID"
-val COL_SCORE = "Score"
+val COL_POINT = "Score"
 val COL_USERNAME = "Username"
 val COL_DATE = "Date"
 
@@ -19,7 +18,7 @@ class DataBaseHandler (private val context: Context) : SQLiteOpenHelper(context,
     override fun onCreate(db: SQLiteDatabase?) {
         val createTable = "CREATE TABLE " + TABLE_NAME + " (" +
                 COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COL_SCORE + " INTEGER," +
+                COL_POINT + " INTEGER," +
                 COL_USERNAME + " VARCHAR(5), " +
                 COL_DATE + " VARCHAR(10))"
 
@@ -33,7 +32,7 @@ class DataBaseHandler (private val context: Context) : SQLiteOpenHelper(context,
     {
         val db = this.writableDatabase
         var contentValues = ContentValues()
-        contentValues.put(COL_SCORE, score.score)
+        contentValues.put(COL_POINT, score.point)
         contentValues.put(COL_USERNAME, score.username)
         contentValues.put(COL_DATE, score.date)
         var result  = db.insert(TABLE_NAME, null ,contentValues)
@@ -58,7 +57,7 @@ class DataBaseHandler (private val context: Context) : SQLiteOpenHelper(context,
                 var score = Score()
                 score.id = result.getString(result.getColumnIndex(COL_ID)).toInt()
                 score.username = result.getString(result.getColumnIndex(COL_USERNAME))
-                score.score = result.getString(result.getColumnIndex(COL_SCORE)).toInt()
+                score.point = result.getString(result.getColumnIndex(COL_POINT)).toInt()
                 score.date = result.getString(result.getColumnIndex(COL_DATE))
                 listScore.add(score)
             } while (result.moveToNext())
@@ -84,7 +83,7 @@ class DataBaseHandler (private val context: Context) : SQLiteOpenHelper(context,
                 var score = Score()
                 score.id = result.getString(result.getColumnIndex(COL_ID)).toInt()
                 score.username = result.getString(result.getColumnIndex(COL_USERNAME))
-                score.score = result.getString(result.getColumnIndex(COL_SCORE)).toInt()
+                score.point = result.getString(result.getColumnIndex(COL_POINT)).toInt()
                 score.date = result.getString(result.getColumnIndex(COL_DATE))
                 listScoreUser.add(score)
             } while (result.moveToNext())
@@ -107,7 +106,7 @@ class DataBaseHandler (private val context: Context) : SQLiteOpenHelper(context,
             do
             {
                 var cv = ContentValues()
-                cv.put(COL_SCORE, result.getInt(result.getColumnIndex(COL_SCORE)+2))
+                cv.put(COL_POINT, result.getInt(result.getColumnIndex(COL_POINT)+2))
                 db.update(TABLE_NAME, cv, COL_ID + "=? AND "+ COL_USERNAME + "=?",
                         arrayOf(result.getString(result.getColumnIndex(COL_ID)),
                                 result.getString(result.getColumnIndex(COL_USERNAME))))
@@ -124,7 +123,7 @@ class DataBaseHandler (private val context: Context) : SQLiteOpenHelper(context,
         var listBestScore:MutableList<Score> = ArrayList()
         var listScore:MutableList<Score> = ArrayList()
         val db = this.readableDatabase
-        val query = "Select " + COL_USERNAME + ", " + COL_SCORE + " From " + TABLE_NAME
+        val query = "Select " + COL_USERNAME + ", " + COL_POINT + " From " + TABLE_NAME
         val result = db.rawQuery(query, null)
 
         if(result.moveToFirst())
@@ -133,11 +132,11 @@ class DataBaseHandler (private val context: Context) : SQLiteOpenHelper(context,
             {
                 var score = Score()
                 score.username = result.getString(result.getColumnIndex(COL_USERNAME))
-                score.score = result.getString(result.getColumnIndex(COL_SCORE)).toInt()
+                score.point = result.getString(result.getColumnIndex(COL_POINT)).toInt()
                 listScore.add(score)
             } while (result.moveToNext())
 
-            listScore.sortByDescending { it.score }
+            listScore.sortByDescending { it.point }
 
             var index = 0
             while (index < 3)
