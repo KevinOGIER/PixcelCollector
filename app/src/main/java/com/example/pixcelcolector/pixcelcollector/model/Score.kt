@@ -1,6 +1,5 @@
 package com.example.pixcelcolector.pixcelcollector.model
 
-
 import android.content.Context
 import java.security.AccessControlContext
 import java.util.*
@@ -40,6 +39,10 @@ class Score
         db.insertData(point)
         db.close()
     }
+
+
+
+
 
     fun getFirstScore(context: Context)
     {
