@@ -47,8 +47,9 @@ class GameActivity : AppCompatActivity(), SensorEventListener {
             }
 
             override fun onFinish() {
-                val inent = Intent(this@GameActivity, ScoresActivity::class.java)
-                startActivity(inent)
+                val intent = Intent(this@GameActivity, ScoresActivity::class.java)
+                intent.putExtra("SCORE", score)
+                startActivity(intent)
                 finish()
             }
 
