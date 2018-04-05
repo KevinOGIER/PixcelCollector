@@ -41,6 +41,10 @@ class Score
         db.close()
     }
 
+
+
+
+
     fun getFirstScore(context: Context)
     {
         var db = DataBaseHandler(context)
