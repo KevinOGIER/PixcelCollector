@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".view.GameActivity">
-
     <TextView
         android:id="@+id/displayedScore"
         android:layout_width="51dp"
@@ -18,16 +17,17 @@
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="344dp"
-        android:layout_height="317dp"
+        android:layout_height="318dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:background="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.476">
 
         <ImageView
             android:id="@+id/square"
@@ -53,6 +53,4 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/boulemagique" />
     </android.support.constraint.ConstraintLayout>
-
-
 </android.support.constraint.ConstraintLayout>
