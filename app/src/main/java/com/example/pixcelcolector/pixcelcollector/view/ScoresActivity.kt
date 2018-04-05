@@ -1,4 +1,3 @@
-
 package com.example.pixcelcolector.pixcelcollector.view
 
 import android.support.v7.app.AppCompatActivity

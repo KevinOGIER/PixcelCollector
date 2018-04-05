@@ -1,6 +1,5 @@
 package com.example.pixcelcolector.pixcelcollector.model
 
-
 import android.content.Context
 import java.security.AccessControlContext
 import java.util.*
