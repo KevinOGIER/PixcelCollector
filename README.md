@@ -79,5 +79,5 @@ To have the game you simply need to compile the program when the phone is connec
 
 * **Kevin OGIER**
 * **Mathieu MALARD**
-* ** Alexis Dezouche**
-* ** Martin Danquigny**
+* **Alexis Dezouche**
+* **Martin Danquigny**
