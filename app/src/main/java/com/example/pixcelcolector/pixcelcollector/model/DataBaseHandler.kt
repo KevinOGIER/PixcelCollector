@@ -20,7 +20,7 @@ class DataBaseHandler (private val context: Context) : SQLiteOpenHelper(context,
         val createTable = "CREATE TABLE " + TABLE_NAME + " (" +
                 COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COL_POINT + " INTEGER," +
-                COL_USERNAME + " VARCHAR(5), "
+                COL_USERNAME + " VARCHAR(5)) "
         db?.execSQL(createTable)
     }
 
@@ -87,60 +87,6 @@ class DataBaseHandler (private val context: Context) : SQLiteOpenHelper(context,
         db.close()
 
         return listScoreUser
-    }
-
-    fun getFirstScore() : MutableList<Score>
-    {
-        var listBestScore:MutableList<Score> = ArrayList()
-        var listScore:MutableList<Score> = ArrayList()
-        val db = this.readableDatabase
-        val query = "Select " + COL_USERNAME + ", " + COL_POINT + " From " + TABLE_NAME
-        val result = db.rawQuery(query, null)
-
-        if(result.moveToFirst())
-        {
-            do
-            {
-                var score = Score()
-                score.username = result.getString(result.getColumnIndex(COL_USERNAME))
-                score.point = result.getString(result.getColumnIndex(COL_POINT)).toInt()
-                listScore.add(score)
-            } while (result.moveToNext())
-
-            listScore.sortByDescending { it.point }
-
-            var index = 0
-            while (index < 3)
-            {
-                listBestScore.add(listScore.get(index))
-                index ++
-            }
-        }
-        result.close()
-        db.close()
-        return listBestScore
-    }
-
-    // TEMP : TEST
-    fun getOneRow(): String
-    {
-        val db = this.readableDatabase
-        val query = "Select " + COL_USERNAME + ", " + COL_POINT + " From " + TABLE_NAME
-        val result = db.rawQuery(query,null)
-        var score = Score()
-        var username:String = ""
-
-        if(result.moveToFirst())
-        {
-            username = result.getString(result.getColumnIndex(COL_USERNAME))
-            score.username = result.getString(result.getColumnIndex(COL_USERNAME))
-            score.point = result.getString(result.getColumnIndex(COL_POINT)).toInt()
-        }
-
-        result.close()
-        db.close()
-
-        return username
     }
 
     fun getClassement(username: String): String
