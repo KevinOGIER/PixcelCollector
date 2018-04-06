@@ -73,7 +73,6 @@ To have the game you simply need to compile the program when the phone is connec
 
 * [AndroidStudio](https://developer.android.com/studio/index.html) - The IDE used
 * [Kotlin](https://kotlinlang.org/docs/tutorials/kotlin-android.html) - The programming language
-* [MVVM architecture](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93viewmodel) - The architecture of the project
 
 
 ## Authors
